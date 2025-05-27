@@ -56,15 +56,15 @@ class ForensicTool(QWidget):
         preview_text = ""
 
         if self.sms_cb.isChecked():
-            sms = parser.get_sample_sms()
+            sms = parser.get_real_sms()
             if keyword:
                 sms = parser.filter_messages_by_keyword(sms, keyword)
             preview_text += "📱 SMS:\n" + "\n".join(
-                f"{m['Sender']}: {m['Message']} @ {m['Timestamp']}" for m in sms
+                f"{m.get('Address', '')}: {m.get('Body', '')} @ {m.get('Date', '')}" for m in sms
             ) + "\n\n"
 
         if self.calllog_cb.isChecked():
-            calls = parser.get_sample_call_logs()
+            calls = parser.get_real_call_logs()
             preview_text += "📞 Call Logs:\n" + "\n".join(
                 f"{c['Name']} - {c['Type']} - {c['Time']}" for c in calls
             ) + "\n\n"
@@ -101,7 +101,7 @@ class ForensicTool(QWidget):
 
         dlg = QDialog(self)
         dlg.setWindowTitle("Preview Data")
-        dlg.setGeometry(200, 200, 500, 400)
+        dlg.setGeometry(200, 200, 2000, 1000)
         layout = QVBoxLayout()
         txt_area = QTextEdit()
         txt_area.setReadOnly(True)
@@ -120,13 +120,15 @@ class ForensicTool(QWidget):
         if self.whatsapp_cb.isChecked():
             adb_connector.pull_whatsapp_media()
         if self.sms_cb.isChecked():
-            sms = parser.get_sample_sms()
+            sms = parser.get_real_sms()
             keyword = self.keyword_input.text().strip()
             if keyword:
                 sms = parser.filter_messages_by_keyword(sms, keyword)
             export_csv.export_to_csv(sms, "sms_logs")
         if self.calllog_cb.isChecked():
-            calls = parser.get_sample_call_logs()
+            calls = parser.get_real_call_logs()
             export_csv.export_to_csv(calls, "call_logs")
 
         QMessageBox.information(self, "Done", "Data extraction complete.")
+# sms = parser.get_real_sms()
+# print("DEBUG SMS:", sms)

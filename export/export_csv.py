@@ -6,3 +6,4 @@ def export_to_csv(data, filename):
         os.makedirs("output")
     df = pd.DataFrame(data)
     df.to_csv(f"output/{filename}.csv", index=False)
+
