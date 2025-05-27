@@ -66,7 +66,7 @@ class ForensicTool(QWidget):
         if self.calllog_cb.isChecked():
             calls = parser.get_real_call_logs()
             preview_text += "📞 Call Logs:\n" + "\n".join(
-                f"{c['Name']} - {c['Type']} - {c['Time']}" for c in calls
+                f"{c.get('Name', '')} - {c.get('Type', '')} - {c.get('Time', c.get('Date', ''))}" for c in calls
             ) + "\n\n"
 
         if self.photos_cb.isChecked():

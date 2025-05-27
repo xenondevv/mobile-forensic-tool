@@ -96,3 +96,16 @@ def get_real_call_logs():
     except Exception as e:
         print("Error retrieving Call Logs:", e)
         return []
+
+
+def filter_messages_by_keyword(messages, keyword):
+    keyword = keyword.lower()
+    return [msg for msg in messages if keyword in msg.get("Body", "").lower() or keyword in msg.get("Address", "").lower()]
+
+def filter_calllogs_by_keyword(calllogs, keyword):
+    keyword = keyword.lower()
+    return [log for log in calllogs if keyword in log.get("Name", "").lower() or keyword in log.get("Number", "").lower() or keyword in log.get("Type", "").lower()]
+
+def filter_media_by_keyword(files, keyword):
+    keyword = keyword.lower()
+    return [f for f in files if keyword in f.lower()]
